@@ -17,41 +17,20 @@ public class ArbolBin {
 
     public void IngresarArbol() {
 
-        String cadena = JOptionPane.showInputDialog("Ingrese las letras:");
-        char vc[] = cadena.toCharArray();
+    String cadena = JOptionPane.showInputDialog("Ingrese las letras:");
+    char vc[] = cadena.toCharArray();
 
-        for (int i = 0; i < vc.length; i++) {
+    for (int i = 0; i < vc.length; i++) {
 
-            Nodo nuevo = new Nodo(vc[i]);
-
-            if (raiz == null) {
-                raiz = nuevo;
-            } else {
-
-                Nodo actual = raiz;
-                Nodo p = null;
-
-                while (actual != null) {
-                    p = actual;
-
-                    if (vc[i] < actual.getDato()) {
-                        actual = actual.getLI();
-                    } else {
-                        actual = actual.getLD();
-                    }
-                }
-
-                if (vc[i] < p.getDato()) {
-                    p.setLI(nuevo);
-                } else {
-                    p.setLD(nuevo);
-                }
-            }
-           AVL(null, raiz, false);
-
+        if (raiz == null) {
+            raiz = new Nodo(vc[i]);  
+        } else {
+            insertar(raiz, vc[i]);   
         }
 
+        AVL(null, raiz, false); 
     }
+}
 private void AVL(Nodo padre, Nodo r, boolean esIzq) {
     if (r == null) return;
     AVL(r, r.getLI(), true);

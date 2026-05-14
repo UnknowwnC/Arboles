@@ -47,82 +47,94 @@ public class ArbolBin {
                     p.setLD(nuevo);
                 }
             }
-            //AVL();
+           AVL(null, raiz, false);
 
         }
 
     }
+private void AVL(Nodo padre, Nodo r, boolean esIzq) {
+    if (r == null) return;
+    AVL(r, r.getLI(), true);
+    AVL(r, r.getLD(), false);
+    int R = ValidarRot(r);
+    Nodo nuevaRaiz = null;
+    switch (R) {
+        case 1:
+            Nodo p = r.getLI();
+            Nodo q = p.getLD();
+            p.setLD(r);
+            r.setLI(q);
+            nuevaRaiz = p;
+            break;
+        case 2:
+            Nodo p1 = r.getLD();
+            Nodo q1 = p1.getLI();
+            p1.setLI(r);
+            r.setLD(q1);
+            nuevaRaiz = p1;
+            break;
+        case 3:
+            if (r.getLI() == null || r.getLI().getLD() == null) break;
+           Nodo p4 = r.getLI();        
+    Nodo q4 = p4.getLD();        
+    p4.setLI(q4.getLI());      
+    q4.setLD(p4);                
 
-    /* private void AVL(){
-        FactorBalance();
-        
-        int R = ValidarRot();
-        switch (R) {
-            case 1: // rotac.derecha
-                
-                break;
-                
-                case 2:// rotaiz
-                
-                break;
-                
-                case 3:// rotadbobledere
-                
-                break;
-                
-                case 4: // rotadobleizquier
-                
-                break;
-            default:
-                throw new AssertionError();
-        }
-    }*/
-    public void mostrar(Nodo raiz, int nivel) {
-        Nodo siguienteDer = raiz.getLD();
-        Nodo siguienteIzq = raiz.getLI();
-        System.out.println("    " + raiz.getDato() + "    ");
+    r.setLD(q4.getLD());        
+    q4.setLI(r);              
+    nuevaRaiz = q4;              
+            break;
+        case 4:
+              System.out.println("Entrando case4 r=" + r.getDato());
+    if (r.getLD() == null || r.getLD().getLI() == null) {
+        System.out.println("Proteccion activada getLD=" + r.getLD() + " getLI=" + (r.getLD()==null?"null":r.getLD().getLI()));
+        break;
+    }
+    if (r.getLD() == null || r.getLD().getLI() == null) break;
+    Nodo p3 = r.getLD();        
+    Nodo q3 = p3.getLI();        
+    p3.setLI(q3.getLD());      
+    q3.setLD(p3);                
 
-        if (raiz != null) {
-            while (siguienteDer != null && siguienteIzq != null) {
-                if (siguienteIzq.getDato() < raiz.getDato()) {
+    r.setLD(q3.getLI());        
+    q3.setLI(r);              
+    nuevaRaiz = q3;              
+    break;
 
-                    siguienteIzq = siguienteIzq.getLI();
-                }
-                if (siguienteDer.getDato() > raiz.getDato()) {
-                    System.out.print("    " + siguienteDer.getDato());
+    }
+    System.out.println("R=" + R + " nuevaRaiz=" + (nuevaRaiz==null?"null":nuevaRaiz.getDato()));
+    if (nuevaRaiz != null) {
 
-                    siguienteDer = siguienteDer.getLD();
-
-                }
-                nivel++;
-            }
+        if (padre == null) {
+            raiz = nuevaRaiz;
+        } else if (esIzq) {
+            padre.setLI(nuevaRaiz);
         } else {
-            System.out.println("El arbol esta vacio...");
+            padre.setLD(nuevaRaiz);
+        }
+    }
+}  
+
+    public int FatorBalance(Nodo r) {
+        if (r == null) {
+            return 0;
         }
 
+        return altura(r.getLI()) - altura(r.getLD());
     }
 
-    /*Nodo siguiente = raiz.getLD();
-        if (siguiente != null) {
-            
-            System.out.println(raiz.getDato());
+   public int ValidarRot(Nodo r) {
+    int fb = FatorBalance(r);
+    System.out.println("Nodo: " + r.getDato() + " fb=" + fb);
+    
+    if (fb >= -1 && fb <= 1) return 0;
+    if (fb > 1 && FatorBalance(r.getLI()) >= 0) { System.out.println("caso 1"); return 1; }
+    if (fb < -1 && FatorBalance(r.getLD()) <= 0) { System.out.println("caso 2"); return 2; }
+    if (fb > 1 && FatorBalance(r.getLI()) < 0) { System.out.println("caso 3"); return 3; }
+    if (fb < -1 && FatorBalance(r.getLD()) > 0) { System.out.println("caso 4"); return 4; }
+    return 0;
+}
 
-            while (siguiente.getLD() != null) {
-                while (siguiente.getLI() != null) {
-                    raiz = raiz.getLD();
-                    if (raiz.getDato() < siguiente.getDato()) {
-
-                        System.out.println("\n " + siguiente.getDato());
-                        siguiente = siguiente.getLD();
-
-                    }
-                    if (raiz.getDato() > siguiente.getDato()) {
-                        System.out.println("\n" + siguiente.getDato());
-                        siguiente = siguiente.getLD();
-                    }
-                }
-            }
-        }*/
     public void preorden(Nodo r) {
         if (r != null) {
             System.out.print(r.getDato() + " "); // raiz
@@ -171,7 +183,18 @@ public class ArbolBin {
         return contador + contarPadres(r.getLI()) + contarPadres(r.getLD());
     }
 
-  
+    /* public void insertarDato(Nodo r){
+        char dato =  Integer.JOptionPane.showInputDialog("Ingrese la letra a insertar:");
+        
+        
+        Nodo p = new Nodo(dato);
+        
+        while(r!=null){
+        if(dato)
+            
+        }
+    }
+    } */
     public void mybrother(Nodo r, char dat) {
 
         if (r == null) {
@@ -230,28 +253,126 @@ public class ArbolBin {
                 altura(r.getLD())
         );
     }
-    
+
     public void insertar(Nodo r, char dat1) {
-    if (r == null) {
-        r = new Nodo(dat1);
-        return;
-    }
-    if(r.getDato()==dat1){
-        System.out.println("Ya existe ese dato");
-        return;
+        if (r == null) {
+            r = new Nodo(dat1);
+            return;
+        }
+        if (r.getDato() == dat1) {
+            System.out.println("Ya existe ese dato");
+            return;
+        }
+
+        if (dat1 < r.getDato()) {
+            if (r.getLI() == null) {
+                r.setLI(new Nodo(dat1));
+            } else {
+                insertar(r.getLI(), dat1);
+            }
+
+        } else {
+            if (r.getLD() == null) {
+                r.setLD(new Nodo(dat1));
+            } else {
+                insertar(r.getLD(), dat1);
+            }
+
+        }
     }
 
-    if (dat1 < r.getDato() && r.getDato() != dat1) {
-        if (r.getLI() == null && r.getDato() != dat1)
-            r.setLI(new Nodo(dat1));
-        else
-            insertar(r.getLI(), dat1);
-    } else {
-        if (r.getLD() == null && r.getDato() != dat1)
-            r.setLD(new Nodo(dat1));
-        else
-            insertar(r.getLD(), dat1);
+    public Nodo eliminar(Nodo r, char dato) {
+
+        if (r == null) {
+            return null;
+        }
+
+        if (dato < r.getDato()) {
+
+            r.setLI(eliminar(r.getLI(), dato));
+
+        } else if (dato > r.getDato()) {
+            r.setLD(eliminar(r.getLD(), dato));
+        } else {
+
+            if (r.getLI() == null && r.getLD() == null) {
+                return null;
+            }
+
+            if (r.getLI() == null) {
+                return r.getLD();
+            }
+
+            if (r.getLD() == null) {
+                return r.getLI();
+            }
+
+            Nodo sucesor = menor(r.getLD());
+
+            r.setDato(sucesor.getDato());
+            r.setLD(eliminar(r.getLD(), sucesor.getDato()));
+        }
+
+        return r;
     }
-}
+
+    public Nodo menor(Nodo r) {
+        while (r.getLI() != null) {
+            r = r.getLI();
+        }
+        return r;
+    }
+
+    public boolean padre(Nodo r, char buscado) {
+
+        if (r == null) {
+            return false;
+
+        }
+        if (r.getLI() != null && r.getLI().getDato() == buscado) {
+            return true;
+        }
+        if (r.getLD() != null && r.getLD().getDato() == buscado) {
+            return true;
+        }
+        return padre(r.getLI(), buscado) || padre(r.getLD(), buscado);
+    }
+
+    Nodo resultado = null;
+
+    public void primoshermanos(Nodo r, char buscado) {
+        padre(r, buscado);
+
+        if (padre(r.getLI(), buscado)) {
+            resultado = r.getLD();
+            return;
+        }
+        if (padre(r.getLD(), buscado)) {
+            resultado = r.getLI();
+            return;
+        }
+
+        primoshermanos(r.getLD(), buscado);
+        primoshermanos(r.getLI(), buscado);
+
+    }
+
+    public boolean mostrarancestros(Nodo r, char ances) {
+        if (r == null) {
+            return false;
+
+        }
+        if (r.getDato() == ances) {
+            return true;
+        }
+
+        if (mostrarancestros(r.getLI(), ances) || mostrarancestros(r.getLD(), ances)) {
+
+            System.out.println(r.getDato());
+            return true;
+        }
+
+        return false;
+    }
 
 }

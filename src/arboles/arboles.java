@@ -1,11 +1,12 @@
 package arboles;
 
 import javax.swing.JOptionPane;
-
+import javax.swing.JFrame;
 /**
  *
  * @author andre
  */
+
 public class arboles {
 
     public static int Menu() {
@@ -21,7 +22,10 @@ public class arboles {
                 + "7. contar padres \n"
                 + "8. insertar datos \n"
                 + "9. mostrtar el hermano de un dato \n"
-                + "10. mostrtar el nivel de un dato \n"
+                + "10. mostrar el nivel de un dato \n"
+                + "11. mostrar La altura de un dato \n"
+                + "12. mostrar el primo hermano de un dato \n"
+                + "13. mostrar los ancestros de un dato \n"
                 + "0. Salir \n\n"
                 + "Seleccione una opcion:"
         ));
@@ -60,14 +64,20 @@ public class arboles {
                     break;
 
                 case 4:
-                    JOptionPane.showMessageDialog(null, "Eliminar ");
+                    String texto = JOptionPane.showInputDialog("Ingrese la letra a eliminar:");
+                    char letra = texto.charAt(0);
+                    arbol.raiz = arbol.eliminar(arbol.raiz, letra);
+                    System.out.println("Nodo eliminado correctamente");
                     break;
 
                 case 5:
-                    System.out.println("Arbol: ");
-                    arbol.mostrar(arbol.raiz, 0);
+                     JFrame ventana = new JFrame("Árbol Binario");
+                    DibujarArbol panel = new DibujarArbol(arbol.raiz);
+                    ventana.add(panel);
+                    ventana.setSize(900, 700);
+                    ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    ventana.setVisible(true);
                     break;
-
                 case 6:
                     int hojas = arbol.contarHojas(arbol.raiz);
                     System.out.println("Cantidad de hojas: " + hojas);
@@ -77,11 +87,13 @@ public class arboles {
                     int padres = arbol.contarPadres(arbol.raiz);
                     System.out.println("Cantidad de padres: " + padres);
                     break;
-                    
+
                 case 8:
-                      String dat1 = JOptionPane.showInputDialog("Ingrese la letra que desea ingresar:");
-                    char datirri = dat1.charAt(0);
-                    arbol.insertar(arbol.raiz, datirri);
+                    String date = JOptionPane.showInputDialog("Ingrese la letra que insertaremos:");
+                    char dto = date.charAt(0);
+                    arbol.insertar(arbol.raiz, dto);
+                    
+
                     break;
 
                 case 9:
@@ -107,7 +119,7 @@ public class arboles {
                 case 11:
 
                     String d = JOptionPane.showInputDialog("Ingrese la letra a la que le buscaremos su altura:"
-);
+                    );
                     char dt = d.charAt(0);
                     int nivelNodo = arbol.nivel(arbol.raiz, dt, 0);
                     if (nivelNodo == -1) {
@@ -117,6 +129,33 @@ public class arboles {
                         int alturaNodo = alturaTotal - nivelNodo;
                         System.out.println("La altura es: " + alturaNodo);
                     }
+
+                    break;
+
+                case 12:
+                    String pri = JOptionPane.showInputDialog("Ingrese la letra a la que le buscaremos su primo hermano:");
+                    char buscado = pri.charAt(0);
+                   arbol.resultado=null;
+                    arbol.primoshermanos(arbol.raiz, buscado);
+                    
+                    if (arbol.resultado!= null) {
+                        if (arbol.resultado.getLI() != null) {
+                            System.out.println("Primo: " + arbol.resultado.getLI().getDato());
+                        }
+                        if (arbol.resultado.getLD() != null) {
+                            System.out.println("Primo: " + arbol.resultado.getLD().getDato());
+                        }
+                    } else {
+                        System.out.println("No tiene primos");
+                    }
+
+                    break;
+
+                case 13:
+                    String an = JOptionPane.showInputDialog("Ingrese la letra a la que le buscaremos sus ancestros:");
+                    char ances = an.charAt(0);
+
+                    arbol.mostrarancestros(arbol.raiz, ances);
 
                     break;
 

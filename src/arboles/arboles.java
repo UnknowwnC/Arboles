@@ -4,7 +4,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JFrame;
 /**
  *
- * @author andre
+ * @author me
  */
 
 public class arboles {
@@ -158,6 +158,12 @@ public class arboles {
                     arbol.mostrarancestros(arbol.raiz, ances);
 
                     break;
+case 14:
+String an = JOptionPane.showInputDialog("Ingrese la letra a la que le buscaremos sus ancestros:");
+                    char ances = an.charAt(0);
+
+                    arbol.mostrarancestros(arbol.raiz, ances);
+break:
 
                 case 0:
                     JOptionPane.showMessageDialog(null, "Saliendo...");

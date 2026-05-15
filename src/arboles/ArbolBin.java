@@ -5,7 +5,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author andre
+ * @author me
  */
 public class ArbolBin {
 
@@ -354,4 +354,27 @@ private void AVL(Nodo padre, Nodo r, boolean esIzq) {
         return false;
     }
 
+public void cymd(Nodo r, char descendiente){
+if (r == null) {
+            return false;
+
+if (r.getDato() == descendiente) {
+            return false;
+        }
+
+        if (cymd(r.getLI(), descendiente) || cymd(r.getLD(), ances)) {
+
+            System.out.println(r.getDato());
+            return false;
+        }
+
+        return true;
+    }
+
+
+
+
+
+
+}
 }
